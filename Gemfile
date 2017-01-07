@@ -14,22 +14,27 @@ gem 'grape-swagger-entity', '0.1.5' # parse entities in api
 gem 'rack-indifferent', '1.1' # makes param keys symbols
 gem 'mysql2', '0.4.5'
 gem 'sequel', '4.40.0'
+gem 'sequel_secure_password'
 gem 'mail', '2.6.4'
 gem 'uuidtools', ' 2.1.5'
 gem 'hanami-validations', '0.6.0' # form validation
 gem 'dry-validation', '0.10.4' # validation methods for reform
 gem 'ability_list', '0.0.4'
 gem 'activesupport', '5.0.0'
+gem 'sucker_punch'
+gem 'jwt'
 
 group :development, :test do
   gem 'awesome_print', '1.7.0'
   gem 'pry', '0.10.4'
+  gem 'pry-doc'
+  gem 'pry-byebug'
 end
 
 group :test do
-  gem 'webmock', '2.1.0'
-  gem 'vcr', '3.0.3'
-  gem 'database_cleaner', '1.5.3'
+#  gem 'webmock', '2.1.0'
+#  gem 'vcr', '3.0.3'
+#  gem 'database_cleaner', '1.5.3'
   gem 'factory_girl', '4.7.0'
   gem 'faker', '1.6.6'
   gem 'rack-test', '0.6.3'
