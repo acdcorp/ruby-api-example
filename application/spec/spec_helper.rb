@@ -4,19 +4,13 @@ ENV['RACK_ENV'] = 'test'
 require './application/api'
 require 'faker'
 require 'factory_girl'
-
-# Load up all application files that we'll be testing in the suites
-Dir['./application/models/**/*.rb'].sort.each     { |rb| require rb }
+require 'sucker_punch/testing/inline'
 
 FactoryGirl.definition_file_paths = %w{./application/spec/factories}
 FactoryGirl.find_definitions
 
-# Factory Girl is expecting ActiveRecord
-class Sequel::Model
-  alias_method :save!, :save
-end
-
-class RSpecConstants
+FactoryGirl.define do
+  to_create(&:save) # Sequel support
 end
 
 module RSpecHelpers
@@ -30,8 +24,12 @@ module RSpecHelpers
     Api
   end
 
+  def response
+    last_response
+  end
+
   def response_body
-    JSON.parse(last_response.body, symbolize_names: true)
+    JSON.parse(response.body, symbolize_names: true)
   end
 
   def get_scope opts = {}
@@ -62,14 +60,31 @@ end
 
 Faker::Config.locale = 'en-US'
 
+Mail.defaults do
+  delivery_method :test
+end
+
 RSpec.configure do |config|
   config.extend RSpecHelpers
   config.include RSpecHelpers
   config.include FactoryGirl::Syntax::Methods
+  config.include Mail::Matchers
   config.filter_run_excluding :slow
   config.color = true
   config.tty = true
   config.formatter = :documentation
+  config.order = :random
+  Kernel.srand config.seed
+
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
+  end
+
+  config.before(:each) do
+    SuckerPunch::Queue.clear
+    Mail::TestMailer.deliveries.clear
+    login_as(nil)
+  end
 
   config.around(:all) do |example|
     Sequel.transaction [SEQUEL_DB], rollback: :always do
