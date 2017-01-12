@@ -30,11 +30,11 @@ describe 'POST /api/auth/login' do
       }
     end
 
-    it 'returns a JWT token', :aggregate_failures do
+    it 'does not return a JWT token', :aggregate_failures do
       post "api/v1.0/auth/login", body
 
       expect(response).to be_unauthorized
-      expect(response_body).to include(error_type: 'unauthorized', errors: {reason: 'Invalid credentials'})
+      expect(response_body).to include(error_type: 'unauthorized')
     end
 
   end

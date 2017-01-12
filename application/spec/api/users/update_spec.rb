@@ -6,7 +6,7 @@ describe 'PUT /api/users/:id' do
       put "api/v1.0/users/#{user.id}", {}
 
       expect(response).to be_forbidden
-      expect(response_body).to include(error_type: 'forbidden', errors: { reason: "Permission denied" })
+      expect(response_body).to include(error_type: 'forbidden')
     end
   end
 
@@ -66,7 +66,7 @@ describe 'PUT /api/users/:id' do
       put "api/v1.0/users/#{other_user.id}", {}
 
       expect(response).to be_forbidden
-      expect(response_body).to include(error_type: 'forbidden', errors: { reason: "Permission denied" })
+      expect(response_body).to include(error_type: 'forbidden')
     end
   end
 end

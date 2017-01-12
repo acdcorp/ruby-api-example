@@ -2,7 +2,7 @@ describe 'PATCH /api/users/:id/reset_password' do
   before { stub_const("ConfirmResetPasswordJob", double(perform_async: nil)) }
   let(:user) { create(:user, reset_password: code, reset_password_expiration: expiration) }
   let(:expiration) { Time.now + 30.minutes }
-  let(:code) { '0123456789' }
+  let(:code) { '12345678' }
 
   context 'when using valid attributes and code' do
     let(:body) do
@@ -54,7 +54,7 @@ describe 'PATCH /api/users/:id/reset_password' do
       patch "api/v1.0/users/#{user.id}/reset_password", body
 
       expect(response).to be_unauthorized
-      expect(response_body).to include(error_type: 'unauthorized', errors: { reason: "Invalid code" })
+      expect(response_body).to include(error_type: 'unauthorized')
     end
   end
 

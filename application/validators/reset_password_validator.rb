@@ -1,8 +1,5 @@
 class Api
-  class ResetPasswordValidator
-    include Hanami::Validations::Form
-    predicates FormPredicates
-
+  class ResetPasswordValidator < Operation::Validator
     validations do
       required(:new_password).filled(:str?)
       required(:confirm_password).filled(:str?)

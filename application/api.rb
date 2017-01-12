@@ -32,17 +32,20 @@ require 'lib/core_ext'
 require 'lib/time_formats'
 require 'lib/io'
 require 'lib/pretty_logger'
+require 'lib/operation'
 
 # load active support helpers
 require 'active_support'
 require 'active_support/core_ext'
 
 # require application classes
+require './application/operations/user_operation'
+
 Dir['./application/models/*.rb'].each { |rb| require rb }
 Dir['./application/entities/*.rb'].each { |rb| require rb }
 Dir['./application/jobs/*.rb'].each { |rb| require rb }
 Dir['./application/validators/*.rb'].each { |rb| require rb }
-
+Dir['./application/operations/*.rb'].each { |rb| require rb }
 Dir['./application/api_helpers/**/*.rb'].each { |rb| require rb }
 
 class Api < Grape::API
@@ -71,7 +74,7 @@ class Api < Grape::API
     Api.logger.error(e.class)
     Api.logger.error(e.message)
     Api.logger.error(e.backtrace.join("\n"))
-    error!({ error_type: 'internal' }, 404)
+    error!({ error_type: 'internal' }, 500)
   end
 
   helpers SharedParams

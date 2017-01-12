@@ -1,8 +1,5 @@
 class Api
-  class UserValidator
-    include Hanami::Validations::Form
-    predicates FormPredicates
-
+ class UserValidator < Operation::Validator
     validations do
       required(:first_name).filled(:str?)
       required(:last_name).filled(:str?)
