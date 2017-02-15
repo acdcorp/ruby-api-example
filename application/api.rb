@@ -59,6 +59,7 @@ class Api < Grape::API
   end
 
   Dir['./application/api_entities/**/*.rb'].each { |rb| require rb }
+  Dir['./application/validators/**/*.rb'].each { |rb| require rb }
   Dir['./application/api/**/*.rb'].each { |rb| require rb }
 
   add_swagger_documentation \

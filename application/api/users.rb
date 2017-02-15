@@ -21,8 +21,15 @@ class Api
     end
 
     post do
-      user = Api::Models::User.create(params[:user])
-      present :user, user, with: API::Entities::User
+      user_validator = UserValidator.new(params[:user])
+
+      if user_validator.validate.success?
+        user = Api::Models::User.create(params[:user])
+
+        present :user, user, with: API::Entities::User
+      else
+        
+      end
     end
   end
 end
