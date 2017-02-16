@@ -4,6 +4,7 @@ ENV['RACK_ENV'] = 'test'
 require './application/api'
 require 'faker'
 require 'factory_girl'
+require 'sidekiq/testing'
 
 # Load up all application files that we'll be testing in the suites
 Dir['./application/models/**/*.rb'].sort.each     { |rb| require rb }
@@ -81,5 +82,9 @@ RSpec.configure do |config|
     Sequel.transaction([SEQUEL_DB], rollback: :always, savepoint: true, auto_savepoint: true) do
       example.run
     end
+  end
+
+  config.before(:each) do
+    Sidekiq::Testing.fake!
   end
 end
