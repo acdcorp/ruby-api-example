@@ -1,4 +1,4 @@
-class UserCreationValidator
+class UserUpdateValidator
   include Hanami::Validations
   predicates FormPredicates
 

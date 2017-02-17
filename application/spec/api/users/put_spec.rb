@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'PUT /api/users' do
+describe 'PUT /api/users/:id' do
   before do
     @user = create(:user, email: 'test_user@test.com', password: 'password')
   end
