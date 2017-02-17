@@ -55,10 +55,6 @@ class Api < Grape::API
   helpers ApiResponse
   include Auth
 
-  before do
-    authenticate!
-  end
-
   Dir['./application/api_entities/**/*.rb'].each { |rb| require rb }
   Dir['./application/validators/**/*.rb'].each { |rb| require rb }
   Dir['./application/workers/**/*.rb'].each { |rb| require rb }

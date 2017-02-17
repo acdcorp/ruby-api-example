@@ -32,5 +32,25 @@ class Api
         error!({ errors: validation_result.messages }, 400)
       end
     end
+
+    params do
+      group :user, type: Hash do
+        optional(:email, type: String, desc: "Users email address")
+        optional(:last_name, type: String, desc: "Users last name")
+        optional(:first_name, type: String, desc: "Users first name")
+        optional(:born_on, type: DateTime, desc: "Users birth date (YYYY-MM-DD)")
+      end
+    end
+
+    desc "updates a user" do
+      headers XAuthToken: {
+            description: 'Valdates your identity',
+            required: true
+          }
+    end
+
+    put ':id' do
+      authenticate!
+    end
   end
 end

@@ -8,11 +8,19 @@ class Api
 
     module HelperMethods
       def authenticate!
-        # Library to authenticate user can go here
+        token = env["X-Auth-Token"]
+        unauthorize! unless token.present?
+
+        @current_user = Api::Models::User.find(token: '123')
+        unauthorized! unless @current_user.present?
       end
 
       def current_user
         @current_user
+      end
+
+      def unauthorized!
+        error!({ error: "Unauthorized request" }, 401)
       end
     end
   end
