@@ -52,7 +52,7 @@ class Api
     put ':id' do
       authenticate!
       user = Api::Models::User.find(id: params[:id])
-      unauthorized! if user.id != current_user.id
+      unauthorized! unless current_user.can? :edit, user
 
       user_validator = UserCreationValidator.new(params[:user])
       validation_result = user_validator.validate
