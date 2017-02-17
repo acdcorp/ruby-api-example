@@ -5,6 +5,11 @@ class Api
     class User < Sequel::Model(:users)
       include AbilityList::Helpers
 
+      def before_create
+        self.token = SecureRandom.hex(18)
+        super
+      end
+
       def abilities
         @abilities ||= Abilities.new(self)
       end

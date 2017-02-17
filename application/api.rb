@@ -22,6 +22,7 @@ class Api < Grape::API; end
 require 'config/sequel'
 require 'config/hanami'
 require 'config/grape'
+require 'config/sidekiq'
 
 # require some global libs
 require 'lib/core_ext'
@@ -54,11 +55,9 @@ class Api < Grape::API
   helpers ApiResponse
   include Auth
 
-  before do
-    authenticate!
-  end
-
   Dir['./application/api_entities/**/*.rb'].each { |rb| require rb }
+  Dir['./application/validators/**/*.rb'].each { |rb| require rb }
+  Dir['./application/workers/**/*.rb'].each { |rb| require rb }
   Dir['./application/api/**/*.rb'].each { |rb| require rb }
 
   add_swagger_documentation \

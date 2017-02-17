@@ -18,6 +18,7 @@ module FormPredicates
   predicate(:datetime_str?) do |current|
     # Format: YYYY-MM-DD HH:MM:SS TZ - ex: 2016-01-01 02:03:04 -0800
     # Timezone is optional
-    current.match(/^\d{4}-\d{2}-\d{2} \d{1,2}\:\d{1,2}\:\d{1,2}( \-\d{4})?$/)
+    return true if current.kind_of? DateTime
+    current.to_s.match(/^\d{4}-\d{2}-\d{2} \d{1,2}\:\d{1,2}\:\d{1,2}( \-\d{4})?$/)
   end
 end
