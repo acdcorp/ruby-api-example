@@ -21,7 +21,7 @@ class Api
     end
 
     post do
-      user_validator = UserValidator.new(params[:user])
+      user_validator = UserCreationValidator.new(params[:user])
       validation_result = user_validator.validate
       if validation_result.success?
         user = Api::Models::User.create(params[:user])
@@ -51,6 +51,19 @@ class Api
 
     put ':id' do
       authenticate!
+      user = Api::Models::User.find(id: params[:id])
+      unauthorized! if user.id != current_user.id
+
+      user_validator = UserCreationValidator.new(params[:user])
+      validation_result = user_validator.validate
+
+      if validation_result.success?
+        user.update(params[:user])
+
+        present :user, user, with: API::Entities::User
+      else
+        error!({ errors: validation_result.messages }, 400)
+      end
     end
   end
 end

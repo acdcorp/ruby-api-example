@@ -11,7 +11,7 @@ class Api
         token = env["X-Auth-Token"]
         unauthorize! unless token.present?
 
-        @current_user = Api::Models::User.find(token: '123')
+        @current_user = Api::Models::User.find(token: token)
         unauthorized! unless @current_user.present?
       end
 
