@@ -5,9 +5,8 @@ class Api
     end
     get do
       users = SEQUEL_DB[:users].all
-      {
-        data: users
-      }
+
+      present users, with: Api::Entities::User
     end
   end
 end
