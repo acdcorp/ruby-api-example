@@ -13,10 +13,10 @@ class Api
         if @current_user = ::Api::Models::User.where(email: payload['email']).first
           true
         else
-          error!('Unauthorized', 401)
+          error!({error_type: 'not_authorized'}, 401)
         end
       rescue JWT::DecodeError, JWT::VerificationError
-        error!('Unauthorized', 401)
+        error!({error_type: 'not_authorized'}, 401)
       end
 
       def current_user

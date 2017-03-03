@@ -36,6 +36,8 @@ class Api
     end
 
     put '/:id' do
+      authenticate!
+
       result = Api::Validators::UpdateUser.new(declared(params)).validate
       error!({ errors: result.messages } , 422) unless result.success?
 
