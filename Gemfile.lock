@@ -14,6 +14,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    bcrypt (3.1.11)
     builder (3.2.2)
     coderay (1.1.1)
     coercible (1.0.0)
@@ -170,6 +171,7 @@ DEPENDENCIES
   ability_list (= 0.0.4)
   activesupport (= 5.0.0)
   awesome_print (= 1.7.0)
+  bcrypt (= 3.1.11)
   database_cleaner (= 1.5.3)
   dry-validation (= 0.10.4)
   factory_girl (= 4.7.0)
@@ -199,4 +201,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-   1.13.6
+   1.14.5
