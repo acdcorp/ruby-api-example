@@ -49,6 +49,7 @@ class Api
       rescue
         nil
       end
+      super
     end
   end
 end

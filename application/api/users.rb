@@ -41,13 +41,8 @@ class Api
       result = Api::Validators::UpdateUser.new(declared(params)).validate
       error!({ errors: result.messages } , 422) unless result.success?
 
-      if user = Api::Models::User.where(id: params[:id]).first
-        user.update(result.output)
-
-        present user, with: Api::Entities::User
-      else
-        api_response({error_type: :not_found})
-      end
+      current_user.update(result.output)
+      present current_user, with: Api::Entities::User
     end
 
     params do
