@@ -27,6 +27,7 @@ require 'config/grape'
 require 'lib/core_ext'
 require 'lib/time_formats'
 require 'lib/io'
+require 'lib/pretty_logger'
 
 # load active support helpers
 require 'active_support'
@@ -39,6 +40,7 @@ require 'bcrypt'
 # require all models
 Dir['./application/models/*.rb'].each { |rb| require rb }
 
+Dir['./application/api_validators/**/*.rb'].each { |rb| require rb }
 Dir['./application/api_helpers/**/*.rb'].each { |rb| require rb }
 class Api < Grape::API
   version 'v1.0', using: :path
@@ -53,6 +55,8 @@ class Api < Grape::API
     end
     error! ret, 400
   end
+
+  logger PrettyLogger.new
 
   helpers SharedParams
   helpers ApiResponse

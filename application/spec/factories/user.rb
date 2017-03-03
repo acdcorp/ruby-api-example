@@ -4,6 +4,6 @@ FactoryGirl.define do
     last_name { Faker::Name.last_name }
     email { Faker::Internet.email }
     password 'test'
-    date_of_birth Date.new(2000, 1, 1)
+    date_of_birth Date.new(2000, 1, 1).to_time.to_s
   end
 end

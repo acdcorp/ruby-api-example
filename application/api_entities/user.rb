@@ -1,7 +1,9 @@
 class Api
   module Entities
     class User < Grape::Entity
+      root 'users', 'user'
 
+      expose :id
       expose :full_name
       expose :first_name
       expose :last_name
