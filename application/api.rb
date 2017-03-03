@@ -32,6 +32,10 @@ require 'lib/io'
 require 'active_support'
 require 'active_support/core_ext'
 
+# require authentication libs
+require 'jwt'
+require 'bcrypt'
+
 # require all models
 Dir['./application/models/*.rb'].each { |rb| require rb }
 

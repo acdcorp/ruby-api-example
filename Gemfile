@@ -21,6 +21,7 @@ gem 'dry-validation', '0.10.4' # validation methods for reform
 gem 'ability_list', '0.0.4'
 gem 'activesupport', '5.0.0'
 gem 'bcrypt', '3.1.11' # encryption
+gem 'jwt', '1.5.6' # Json Web Token
 
 group :development, :test do
   gem 'awesome_print', '1.7.0'
