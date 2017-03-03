@@ -22,7 +22,7 @@ describe 'PUT /api/users/:id', :type => :request do
 
     let(:headers) { { 'HTTP_AUTHORIZATION' => token} }
 
-    it 'should create the user' do
+    it 'should update the user' do
       put "api/v1.0/users/#{user_id}", params, headers
       user = response_body[:user]
       expect(user[:id]).to eq(user_id)
@@ -30,6 +30,25 @@ describe 'PUT /api/users/:id', :type => :request do
       expect(user[:last_name]).to eq(params[:last_name])
       expect(user[:email]).to eq(params[:email])
       expect(user[:date_of_birth]).to eq(params[:date_of_birth])
+    end
+
+  end
+
+  context "update another user" do
+
+    let(:another_user) { create(:user) }
+    let(:user_id) { another_user.id }
+
+    let(:token) do
+      payload = { email: user.email }
+      JWT.encode(payload, HMAC_SECRET)
+    end
+
+    let(:headers) { { 'HTTP_AUTHORIZATION' => token} }
+
+    it 'should NOT update another user' do
+      put "api/v1.0/users/#{user_id}", params, headers
+      expect(response_body[:error_type]).to eq('forbidden')
     end
 
   end
