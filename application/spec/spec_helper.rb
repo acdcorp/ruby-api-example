@@ -50,6 +50,10 @@ module RSpecHelpers
     scope.instance_variable_set(:@current_user, opts[:as_user])
     scope
   end
+
+  def last_mail
+    Mail::TestMailer.deliveries.last
+  end
 end
 
 class Api
@@ -98,5 +102,6 @@ RSpec.configure do |config|
 
   config.before(:each) do
     Mail::TestMailer.deliveries.clear
+    Sidekiq::Worker.clear_all
   end
 end
