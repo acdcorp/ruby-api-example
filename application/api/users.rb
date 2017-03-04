@@ -72,5 +72,26 @@ class Api
       end
     end
 
+    params do
+      requires :email, type: String
+      requires :password, type: String
+    end
+
+    post '/signin' do
+      result = Api::Validators::UserSignin.new(declared(params)).validate
+      error!({ errors: result.messages } , 422) unless result.success?
+
+      unless user = Api::Models::User.where(email: result.output['email']).first
+        return api_response({error_type: :unauthorized})
+      end
+
+      unless user.password == result.output['password']
+        return api_response({error_type: :unauthorized})
+      end
+
+      token = generate_token_for_user(user)
+      api_response({token: token})
+    end
+
   end
 end

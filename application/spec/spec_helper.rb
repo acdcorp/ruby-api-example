@@ -34,6 +34,10 @@ module RSpecHelpers
     JSON.parse(last_response.body, symbolize_names: true)
   end
 
+  def response_status
+    last_response.status
+  end
+
   def get_scope opts = {}
     scope = Api.new
     scope.instance_variable_set(:@current_user, opts[:as_user])

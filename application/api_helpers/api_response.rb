@@ -9,6 +9,8 @@ class Api
           status 404
         when :forbidden
           status 403
+        when :unauthorized
+          status 401
         else
           status 400
         end

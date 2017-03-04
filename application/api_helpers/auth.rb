@@ -22,6 +22,11 @@ class Api
       def current_user
         @current_user
       end
+
+      def generate_token_for_user(user)
+        payload = { email: user.email }
+        JWT.encode(payload, HMAC_SECRET)
+      end
     end
   end
 end
