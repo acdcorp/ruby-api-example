@@ -19,6 +19,12 @@ describe 'POST /api/users' do
       expect(user[:email]).to eq(user_params[:email])
     end
 
+    it 'should enqueue welcome user mailer' do
+      expect {
+        post "api/v1.0/users", user_params
+      }.to change(Api::WelcomeUserMailer.jobs, :size).by(1)
+    end
+
   end
 
   context "with invalid params" do
@@ -36,6 +42,12 @@ describe 'POST /api/users' do
       errors = response_body[:errors]
       expect(errors).to be_present
       expect(errors[:first_name]).to be_present
+    end
+
+    it 'should not enqueue welcome user mailer' do
+      expect {
+        post "api/v1.0/users", user_params
+      }.to change(Api::WelcomeUserMailer.jobs, :size).by(0)
     end
 
   end

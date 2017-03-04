@@ -20,6 +20,12 @@ describe 'PATCH /api/users/:id/reset_password' do
       expect(user.password).to eq(params[:new_password])
     end
 
+    it 'should enqueue reset password mailer' do
+      expect {
+        patch "api/v1.0/users/#{user_id}/reset_password", params
+      }.to change(Api::ResetPasswordMailer.jobs, :size).by(1)
+    end
+
   end
 
   context "with invalid params" do
@@ -34,6 +40,12 @@ describe 'PATCH /api/users/:id/reset_password' do
       expect(errors).to be_present
       expect(errors[:confirm_password]).to be_present
       expect(user.password).to eq('oldpass')
+    end
+
+    it 'should not enqueue reset password mailer' do
+      expect {
+        patch "api/v1.0/users/#{user_id}/reset_password", params
+      }.to change(Api::ResetPasswordMailer.jobs, :size).by(0)
     end
 
   end
