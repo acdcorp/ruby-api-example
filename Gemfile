@@ -26,6 +26,7 @@ gem 'jwt', '1.5.6' # Json Web Token
 group :development, :test do
   gem 'awesome_print', '1.7.0'
   gem 'pry', '0.10.4'
+  gem 'letter_opener', '1.4.1'
 end
 
 group :test do

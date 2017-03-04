@@ -21,6 +21,7 @@ class Api < Grape::API; end
 # Include all config files
 require 'config/sequel'
 require 'config/hanami'
+require 'config/mail'
 require 'config/grape'
 
 # require some global libs
