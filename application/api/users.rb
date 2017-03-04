@@ -63,13 +63,14 @@ class Api
       result = Api::Validators::ResetUserPassword.new(declared(params)).validate
       error!({ errors: result.messages } , 422) unless result.success?
 
-      if user = Api::Models::User.where(id: params[:id]).first
-        user.password = result.output['new_password']
-        user.save
-        api_response({status: :ok})
-      else
-        api_response({error_type: :not_found})
+      unless user = Api::Models::User.where(id: params[:id]).first
+        return api_response({error_type: :not_found})
       end
+
+      user.password = result.output['new_password']
+      user.save
+
+      api_response({status: :ok})
     end
 
     params do
