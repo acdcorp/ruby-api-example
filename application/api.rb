@@ -41,7 +41,14 @@ require 'bcrypt'
 # require all models
 Dir['./application/models/*.rb'].each { |rb| require rb }
 
+# require all validators
 Dir['./application/api_validators/**/*.rb'].each { |rb| require rb }
+
+# require all mailers
+require './application/mailers/mailer_base.rb'
+Dir['./application/mailers/**/*.rb'].each { |rb| require rb }
+
+
 Dir['./application/api_helpers/**/*.rb'].each { |rb| require rb }
 class Api < Grape::API
   version 'v1.0', using: :path
