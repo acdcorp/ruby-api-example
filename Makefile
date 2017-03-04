@@ -16,6 +16,9 @@ install:
 run:
 	bundle exec rerun -b --pattern '{Gemfile,Gemfile.lock,.gems,.bundle,.env*,config.ru,**/*.{rb,ru,yml}}' -- thin start --port=3000 --threaded
 
+worker:
+	bundle exec sidekiq -C ./application/config/yaml/sidekiq.yml
+
 console:
 	bundle exec pry -r ./application/api
 

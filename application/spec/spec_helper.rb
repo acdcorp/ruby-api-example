@@ -4,12 +4,19 @@ ENV['RACK_ENV'] = 'test'
 require './application/api'
 require 'faker'
 require 'factory_girl'
+require 'sidekiq/testing'
 
 # Load up all application files that we'll be testing in the suites
 Dir['./application/models/**/*.rb'].sort.each     { |rb| require rb }
 
 FactoryGirl.definition_file_paths = %w{./application/spec/factories}
 FactoryGirl.find_definitions
+
+Sidekiq::Testing.fake!
+
+Mail.defaults do
+  delivery_method :test
+end
 
 # Factory Girl is expecting ActiveRecord
 class Sequel::Model
@@ -34,10 +41,18 @@ module RSpecHelpers
     JSON.parse(last_response.body, symbolize_names: true)
   end
 
+  def response_status
+    last_response.status
+  end
+
   def get_scope opts = {}
     scope = Api.new
     scope.instance_variable_set(:@current_user, opts[:as_user])
     scope
+  end
+
+  def last_mail
+    Mail::TestMailer.deliveries.last
   end
 end
 
@@ -49,6 +64,7 @@ class Api
       rescue
         nil
       end
+      super
     end
   end
 end
@@ -66,6 +82,7 @@ RSpec.configure do |config|
   config.extend RSpecHelpers
   config.include RSpecHelpers
   config.include FactoryGirl::Syntax::Methods
+  config.include Mail::Matchers
   config.filter_run_excluding :slow
   config.color = true
   config.tty = true
@@ -81,5 +98,10 @@ RSpec.configure do |config|
     Sequel.transaction([SEQUEL_DB], rollback: :always, savepoint: true, auto_savepoint: true) do
       example.run
     end
+  end
+
+  config.before(:each) do
+    Mail::TestMailer.deliveries.clear
+    Sidekiq::Worker.clear_all
   end
 end

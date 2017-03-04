@@ -20,10 +20,15 @@ gem 'hanami-validations', '0.6.0' # form validation
 gem 'dry-validation', '0.10.4' # validation methods for reform
 gem 'ability_list', '0.0.4'
 gem 'activesupport', '5.0.0'
+gem 'bcrypt', '3.1.11' # encryption
+gem 'jwt', '1.5.6' # Json Web Token
+gem 'sidekiq', '4.2.9' # handle background jobs
+gem 'redis', '3.3.3'
 
 group :development, :test do
   gem 'awesome_print', '1.7.0'
   gem 'pry', '0.10.4'
+  gem 'letter_opener', '1.4.1'
 end
 
 group :test do

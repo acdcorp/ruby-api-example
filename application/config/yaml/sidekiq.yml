@@ -2,6 +2,7 @@
 :queues:
   - [priority, 7]
   - [default, 5]
+  - [mailers, 4]
   - [seldom, 3]
 staging:
   :concurrency: 10

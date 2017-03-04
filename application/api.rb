@@ -13,6 +13,7 @@ end
 require 'bundler'
 Bundler.setup :default, RACK_ENV
 require 'rack/indifferent'
+require 'sidekiq'
 require 'grape'
 require 'grape/batch'
 # Initialize the application so we can add all our components to it
@@ -21,19 +22,33 @@ class Api < Grape::API; end
 # Include all config files
 require 'config/sequel'
 require 'config/hanami'
+require 'config/mail'
 require 'config/grape'
 
 # require some global libs
 require 'lib/core_ext'
 require 'lib/time_formats'
 require 'lib/io'
+require 'lib/pretty_logger'
 
 # load active support helpers
 require 'active_support'
 require 'active_support/core_ext'
 
+# require authentication libs
+require 'jwt'
+require 'bcrypt'
+
 # require all models
 Dir['./application/models/*.rb'].each { |rb| require rb }
+
+# require all validators
+Dir['./application/api_validators/**/*.rb'].each { |rb| require rb }
+
+# require all mailers
+require './application/mailers/mailer_base.rb'
+Dir['./application/mailers/**/*.rb'].each { |rb| require rb }
+
 
 Dir['./application/api_helpers/**/*.rb'].each { |rb| require rb }
 class Api < Grape::API
@@ -50,13 +65,12 @@ class Api < Grape::API
     error! ret, 400
   end
 
+  logger PrettyLogger.new
+
   helpers SharedParams
   helpers ApiResponse
+  helpers ApiFormat
   include Auth
-
-  before do
-    authenticate!
-  end
 
   Dir['./application/api_entities/**/*.rb'].each { |rb| require rb }
   Dir['./application/api/**/*.rb'].each { |rb| require rb }
