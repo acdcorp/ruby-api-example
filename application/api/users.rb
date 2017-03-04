@@ -10,12 +10,13 @@ class Api
       present users, with: Api::Entities::User
     end
 
+    desc "Creates a user"
     params do
-      requires :first_name, type: String
-      requires :last_name, type: String
-      requires :email, type: String
-      requires :password, type: String
-      optional :date_of_birth, type: String
+      requires :first_name, type: String, desc: "User's first name"
+      requires :last_name, type: String, desc: "User's last name"
+      requires :email, type: String, desc: "User's email name"
+      requires :password, type: String, desc: "User's password"
+      optional :date_of_birth, type: String, desc: "User's date of birth / Format: YYYY:MM:DD HH:MM:SS TZ"
     end
 
     post do
@@ -30,11 +31,12 @@ class Api
       present user, with: Api::Entities::User
     end
 
+    desc "Updates a user"
     params do
-      optional :first_name, type: String
-      optional :last_name, type: String
-      optional :email, type: String
-      optional :date_of_birth, type: String
+      optional :first_name, type: String, desc: "User's first name"
+      optional :last_name, type: String, desc: "User's last name"
+      optional :email, type: String, desc: "User's email name"
+      optional :date_of_birth, type: String, desc: "User's date of birth / Format: YYYY:MM:DD HH:MM:SS TZ"
     end
 
     put '/:id' do
@@ -56,9 +58,10 @@ class Api
       present user, with: Api::Entities::User
     end
 
+    desc "Resets a user's password"
     params do
-      requires :new_password, type: String
-      requires :confirm_password, type: String
+      requires :new_password, type: String, desc: "New password"
+      requires :confirm_password, type: String, desc: "Password confirmation"
     end
 
     patch '/:id/reset_password' do
@@ -77,9 +80,10 @@ class Api
       api_response({status: :ok})
     end
 
+    desc "Signin a user"
     params do
-      requires :email, type: String
-      requires :password, type: String
+      requires :email, type: String, desc: "User's  email"
+      requires :password, type: String, desc: "User's password"
     end
 
     post '/signin' do
