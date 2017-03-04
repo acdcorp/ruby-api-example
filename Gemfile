@@ -22,6 +22,8 @@ gem 'ability_list', '0.0.4'
 gem 'activesupport', '5.0.0'
 gem 'bcrypt', '3.1.11' # encryption
 gem 'jwt', '1.5.6' # Json Web Token
+gem 'sidekiq', '4.2.9' # handle background jobs
+gem 'redis', '3.3.3'
 
 group :development, :test do
   gem 'awesome_print', '1.7.0'

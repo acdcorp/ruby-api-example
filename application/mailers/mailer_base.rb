@@ -1,6 +1,9 @@
 class Api::MailerBase
   include ERB::Util
 
+  include Sidekiq::Worker
+  sidekiq_options queue: 'mailers'
+
   def mail(from:, to:, subject:)
     mailer = Mail.new do
       to      to

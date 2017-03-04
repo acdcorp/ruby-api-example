@@ -25,6 +25,8 @@ class Api
       user = Api::Models::User.new(result.output)
       user.save
 
+      Api::WelcomeUserMailer.perform_async(user.id)
+
       present user, with: Api::Entities::User
     end
 
@@ -69,6 +71,8 @@ class Api
 
       user.password = result.output['new_password']
       user.save
+
+      Api::ResetPasswordMailer.perform_async(user.id)
 
       api_response({status: :ok})
     end

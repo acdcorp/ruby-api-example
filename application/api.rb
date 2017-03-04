@@ -13,6 +13,7 @@ end
 require 'bundler'
 Bundler.setup :default, RACK_ENV
 require 'rack/indifferent'
+require 'sidekiq'
 require 'grape'
 require 'grape/batch'
 # Initialize the application so we can add all our components to it
