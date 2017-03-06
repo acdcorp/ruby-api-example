@@ -8,11 +8,18 @@ class Api
 
     module HelperMethods
       def authenticate!
-        # Library to authenticate user can go here
+        error!('Unauthorized. Invalid or expired token.', 401) unless set_current_user
       end
 
-      def current_user
-        @current_user
+      private
+
+      def set_current_user
+        token = Api::Models::UserToken.first(access_token: headers['Token'])
+        if token && !token.expired?
+          Api.class_variable_set(:@@current_user, Api::Models::User[token.user_id])
+        else
+          false
+        end
       end
     end
   end

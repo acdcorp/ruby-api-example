@@ -31,10 +31,11 @@ require 'lib/io'
 # load active support helpers
 require 'active_support'
 require 'active_support/core_ext'
+require 'mail'
 
 # require all models
 Dir['./application/models/*.rb'].each { |rb| require rb }
-
+Dir['./application/validations/*.rb'].each { |rb| require rb }
 Dir['./application/api_helpers/**/*.rb'].each { |rb| require rb }
 class Api < Grape::API
   version 'v1.0', using: :path
@@ -63,4 +64,17 @@ class Api < Grape::API
 
   add_swagger_documentation \
     mount_path: '/docs'
+
+  Mail.defaults do
+    delivery_method :smtp, {
+      address:               SMTP_SERVER,
+      port:                  465,
+      user_name:             MAIL_SMTP_USER,
+      password:              MAIL_SMTP_PASSWORD,
+      authentication:        :login,
+      ssl:                   true,
+      tls:                   true,
+      enable_starttls_auto:  true
+    }
+  end
 end
