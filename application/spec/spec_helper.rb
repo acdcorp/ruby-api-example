@@ -5,6 +5,10 @@ require './application/api'
 require 'faker'
 require 'factory_girl'
 
+Mail.defaults do
+  delivery_method :test
+end
+
 # Load up all application files that we'll be testing in the suites
 Dir['./application/models/**/*.rb'].sort.each     { |rb| require rb }
 
