@@ -9,6 +9,10 @@ class Api
           status 404
         when :forbidden
           status 403
+        when :unauthorized
+          status 401
+        when :unprocessable_entity, :invalid
+          status 422
         else
           status 400
         end

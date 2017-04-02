@@ -3,6 +3,8 @@ require 'lib/abilities'
 class Api
   module Models
     class User < Sequel::Model(:users)
+      plugin :secure_password, include_validations: false
+
       include AbilityList::Helpers
 
       def abilities
